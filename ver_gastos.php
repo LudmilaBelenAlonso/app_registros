@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-session_start();
+//session_start();
 
 // Filtros desde el formulario
 $filtro_tipo_pago = isset($_GET['filtro_tipo_pago']) ? $_GET['filtro_tipo_pago'] : '';

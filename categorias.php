@@ -1,6 +1,6 @@
 <?php
 include 'config.php';  // Incluir la configuración de la base de datos
-session_start();
+//session_start();
 
 /*Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
