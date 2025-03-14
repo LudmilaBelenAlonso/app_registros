@@ -69,3 +69,32 @@ CREATE TABLE IF NOT EXISTS tarjetas_credito (
     usuario_id INT NOT NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
+
+CREATE TABLE transacciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    banco_id INT NOT NULL,
+    categoria_id INT NOT NULL,
+    tipo ENUM('ingreso', 'gasto') NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    fecha DATE NOT NULL,
+    descripcion TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (banco_id) REFERENCES bancos(banco_id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ON DELETE CASCADE
+);
+
+CREATE TABLE ingresos_crypto_dolares 
+(id INT AUTO_INCREMENT PRIMARY KEY, 
+usuario_id INT NOT NULL, 
+categoria_id INT NOT NULL, 
+tipo_moneda ENUM('crypto', 'usd') 
+NOT NULL, monto DECIMAL(15,2) NOT NULL, 
+fecha DATE NOT NULL, 
+descripcion TEXT, 
+FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id), 
+FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ) 
+
+CREATE TABLE saldos_crypto_dolares ( saldocd_id INT AUTO_INCREMENT PRIMARY KEY, usuario_id INT NOT NULL, tipo_moneda ENUM('crypto', 'usd') NOT NULL, saldo DECIMAL(15,2) NOT NULL DEFAULT 0, fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id), UNIQUE (usuario_id, tipo_moneda) -- Evita duplicados por usuario y tipo de moneda ) 

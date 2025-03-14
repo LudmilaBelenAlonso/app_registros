@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 // Obtener la sección desde el parámetro GET, con un valor predeterminado
 $seccion = isset($_GET['s']) ? $_GET['s'] : 'home';
@@ -11,9 +11,9 @@ $seccion = preg_replace('/[^a-zA-Z0-9_]/', '', $seccion);
 $archivo_seccion = $seccion . '.php';
 
 // Si el archivo no existe, redirigir a una página de error
-if (!file_exists($archivo_seccion)) {
+/*if (!file_exists($archivo_seccion)) {
     $archivo_seccion = '404.php'; // Archivo para sección no encontrada
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,9 +29,11 @@ if (!file_exists($archivo_seccion)) {
         <div>
             <nav id="navbarNav">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_ingresos">Agregar Ingresos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_gastos">Agregar Gastos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_ingresos">Agregar Ingresos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=saldos_actuales">Saldos actuales</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_ingresos_cd">Agregar Crypto y Dolares</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?s=saldos_crypto_dolares">Saldos Crypto y Dolares</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=ver_gastos">Ver Gastos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=categorias">Categorías</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=tarjetas">Tarjetas de Crédito</a></li>
