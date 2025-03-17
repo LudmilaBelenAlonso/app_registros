@@ -18,7 +18,7 @@ $sql_gastos = "SELECT transaccion_id, t.monto, t.fecha, t.descripcion, c.nombre 
                JOIN categorias c ON t.categoria_id = c.categoria_id
                LEFT JOIN bancos b ON t.banco_id = b.banco_id
                LEFT JOIN tarjetas_credito tc ON t.tarjeta_id = tc.tarjeta_id
-               WHERE t.usuario_id = 1";
+               WHERE t.usuario_id = '1' ORDER BY t.fecha ASC";
 
 // Aplicar filtros si están seleccionados
 if (!empty($filtro_tipo_pago)) {
