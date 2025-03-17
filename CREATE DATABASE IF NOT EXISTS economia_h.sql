@@ -95,6 +95,11 @@ NOT NULL, monto DECIMAL(15,2) NOT NULL,
 fecha DATE NOT NULL, 
 descripcion TEXT, 
 FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id), 
-FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ) 
+FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ) ;
 
-CREATE TABLE saldos_crypto_dolares ( saldocd_id INT AUTO_INCREMENT PRIMARY KEY, usuario_id INT NOT NULL, tipo_moneda ENUM('crypto', 'usd') NOT NULL, saldo DECIMAL(15,2) NOT NULL DEFAULT 0, fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id), UNIQUE (usuario_id, tipo_moneda) -- Evita duplicados por usuario y tipo de moneda ) 
+CREATE TABLE saldos_cripto_dolares 
+(saldocd_id INT AUTO_INCREMENT PRIMARY KEY, 
+usuario_id INT NOT NULL,
+moneda_id INT NOT NULL, 
+saldocd DECIMAL(15,9) NOT NULL, 
+fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
