@@ -32,6 +32,7 @@ $archivo_seccion = $seccion . '.php';
                     <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_gastos">Agregar Gastos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_ingresos">Agregar Ingresos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=saldos_actuales">Saldos actuales</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_gastos_dolares">Agregar Gastos Dolares</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=agregar_ingresos_cd">Agregar Crypto y Dolares</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=saldos_crypto_dolares">Saldos Crypto y Dolares</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=ver_gastos">Ver Gastos</a></li>

@@ -13,7 +13,7 @@ $anio = isset($_POST['anio']) ? $_POST['anio'] : date('Y');
 // Consulta inicial para obtener los saldos actuales
 $sql_saldos = "
     SELECT b.nombre AS banco, mcd.descripcion as moneda , saldo_cd AS saldo, fecha_registro
-    FROM saldos_cripto_dolares scd
+    FROM saldos_crypto_dolares scd
     JOIN bancos b ON scd.banco_id = b.banco_id
     JOIN monedas_crypto_dolares mcd ON scd.moneda_id=mcd.moneda_id
     WHERE scd.usuario_id = 1";
