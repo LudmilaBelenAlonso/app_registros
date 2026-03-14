@@ -88,11 +88,11 @@ if (!$result_categorias) {
 }
 
 // Consulta para obtener todos los bancos (débito)
-$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND deb_cred = 0";
+$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND debito = 1";
 $result_bancos = $conn->query($sql_bancos);
 
 // Consulta para obtener todos los bancos (crédito)
-$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND deb_cred = 1";
+$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND credito = 1";
 $result_tarjetas_bancos = $conn->query($sql_tarjetas_bancos);
 
 // Consulta para obtener todas las tarjetas de crédito

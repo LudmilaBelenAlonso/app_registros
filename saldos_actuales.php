@@ -15,7 +15,7 @@ $sql_saldos = "
     SELECT b.nombre AS banco, sa.saldo AS saldo, fecha_registro
     FROM saldos_actuales sa
     JOIN bancos b ON sa.banco_id = b.banco_id
-    WHERE sa.usuario_id = 1";
+    WHERE sa.usuario_id = 1 and sa.banco_id!='8'";
 $result_saldos = mysqli_query($conn, $sql_saldos);
 if (!$result_saldos) {
     die("Error en la consulta de saldos: " . mysqli_error($conn));

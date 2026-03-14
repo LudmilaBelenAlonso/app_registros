@@ -58,7 +58,7 @@ $sql_categorias = "SELECT * FROM categorias WHERE usuario_id='1' AND tipo='ingre
 $result_categorias = $conn->query($sql_categorias);
 
 // Consulta para obtener todos los bancos del usuario
-$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1'";
+$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND debito='1' OR banco_id='8'";
 $result_bancos = $conn->query($sql_bancos);
 ?>
 
