@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cuotas = isset($_POST['cuotas']) ? intval($_POST['cuotas']) : null;
     $cuota_actual = isset($_POST['cuota_actual']) ? intval($_POST['cuota_actual']) : null;
     $fecha_cierre = null;
+    $moneda_id = $_POST['moneda_id'];
 
     // Manejar valores según el tipo de pago
     if ($tipo_pago === 'debito') {
@@ -36,17 +37,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Actualizar el saldo si es tipo de pago débito
     if ($tipo_pago === 'debito' && $banco_id !== null) {
-        $sql_ver_saldo = "SELECT saldo FROM saldos_actuales WHERE banco_id = $banco_id";
+        $sql_ver_saldo = "SELECT saldo_cd FROM saldos_crypto_dolares WHERE banco_id = $banco_id AND moneda_id = $moneda_id";
         $resultado_saldo = mysqli_query($conn, $sql_ver_saldo);
 
         if ($resultado_saldo && mysqli_num_rows($resultado_saldo) > 0) {
             $fila_saldo = mysqli_fetch_assoc($resultado_saldo);
-            $saldo_anterior = floatval($fila_saldo['saldo']);
+            $saldo_anterior = floatval($fila_saldo['saldo_cd']);
 
             // Actualizar el saldo restando el monto
-            $sql_actualizar_saldo = "UPDATE saldos_actuales 
-                                     SET saldo = $saldo_anterior - $monto
-                                     WHERE banco_id = $banco_id";
+            $sql_actualizar_saldo = "UPDATE saldos_crypto_dolares 
+                                     SET saldo_cd = $saldo_anterior - $monto
+                                     WHERE banco_id = $banco_id AND moneda_id = $moneda_id";
 
             if (!mysqli_query($conn, $sql_actualizar_saldo)) {
                 echo "Error al actualizar el saldo: " . mysqli_error($conn);
@@ -57,12 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Inserción de gasto en la tabla transacciones
-    $sql = "INSERT INTO transacciones (usuario_id, categoria_id, banco_id, tarjeta_id, monto, fecha, descripcion, tipo_pago, cuotas, cuota_actual, fecha_cierre, timestamp)
+    $sql = "INSERT INTO transacciones_dolares (usuario_id, categoria_id, banco_id, tarjeta_id, moneda_id, monto, fecha, descripcion, tipo_pago, cuotas, cuota_actual, fecha_cierre, timestamp)
             VALUES (
                 1, 
                 '$categoria_id', 
                 " . ($banco_id !== null ? "'$banco_id'" : "NULL") . ",
                 " . ($tarjeta_id !== null ? "'$tarjeta_id'" : "NULL") . ",
+                " . ($moneda_id !== null ? "'$moneda_id'" : "NULL") . ",
                 '$monto', 
                 '$fecha', 
                 '$descripcion', 
@@ -87,6 +89,10 @@ if (!$result_categorias) {
     die("Error en la consulta de categorías: " . $conn->error);
 }
 
+// Consulta para obtener todas las monedas disponibles
+$sql_monedas = "SELECT * FROM monedas_crypto_dolares";
+$result_monedas = $conn->query($sql_monedas);
+
 // Consulta para obtener todos los bancos (débito)
 $sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND debito = 1";
 $result_bancos = $conn->query($sql_bancos);
@@ -103,7 +109,7 @@ $result_tarjetas = $conn->query($sql_tarjetas);
 <section class="container">
     <h3>Agregar Gastos</h3>
 
-    <form method="post" action="index.php?s=agregar_gastos">
+    <form method="post" action="index.php?s=agregar_gastos_dolares">
         <label for="categoria_id">Categoría:</label>
         <select name="categoria_id" required class="form-control">
             <?php while ($row = $result_categorias->fetch_assoc()): ?>
@@ -120,6 +126,13 @@ $result_tarjetas = $conn->query($sql_tarjetas);
         <label for="descripcion">Descripción:</label>
         <textarea name="descripcion" placeholder="Descripción" class="form-control"></textarea>
         
+        <label for="moneda_id">Moneda:</label>
+        <select name="moneda_id" required class="form-control">
+            <?php while ($row = $result_monedas->fetch_assoc()): ?>
+                <option value="<?php echo $row['moneda_id']; ?>"><?php echo $row['descripcion']; ?></option>
+            <?php endwhile; ?>
+        </select>
+
         <label for="tipo_pago">Tipo de Pago:</label>
         <select name="tipo_pago" id="tipo_pago" required onchange="toggleBancoTarjeta()" class="form-control">
             <option value="debito">Débito</option>

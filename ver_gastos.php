@@ -18,7 +18,7 @@ $sql_gastos = "SELECT transaccion_id, t.monto, t.fecha, t.descripcion, c.nombre 
                JOIN categorias c ON t.categoria_id = c.categoria_id
                LEFT JOIN bancos b ON t.banco_id = b.banco_id
                LEFT JOIN tarjetas_credito tc ON t.tarjeta_id = tc.tarjeta_id
-               WHERE t.usuario_id = 1";
+               WHERE t.usuario_id = '1' ORDER BY t.fecha ASC";
 
 // Aplicar filtros si están seleccionados
 if (!empty($filtro_tipo_pago)) {
@@ -59,64 +59,64 @@ $result_tarjetas = $conn->query($sql_tarjetas);
 <section class="container">
     <h3>Gastos Registrados</h3>
     
-        <!-- Formulario de filtros -->
+        <!-- Formulario de filtros 
         <form method="GET" action="ver_gastos.php">
             <label for="filtro_tipo_pago">Filtrar por Tipo de Pago:</label>
             <select name="filtro_tipo_pago" class="form-control">
                 <option value="">Todos</option>
-                <option value="debito" <?php if ($filtro_tipo_pago == 'debito') echo 'selected'; ?>>Débito</option>
-                <option value="credito" <?php if ($filtro_tipo_pago == 'credito') echo 'selected'; ?>>Crédito</option>
+                <option value="debito" <//?php if ($filtro_tipo_pago == 'debito') echo 'selected'; ?>>Débito</option>
+                <option value="credito" <//?php if ($filtro_tipo_pago == 'credito') echo 'selected'; ?>>Crédito</option>
             </select>
 
             <label for="filtro_banco">Filtrar por Banco:</label>
             <select name="filtro_banco" class="form-control">
                 <option value="">Todos</option>
-                <?php while ($row_banco = $result_bancos->fetch_assoc()): ?>
-                    <option value="<?php echo $row_banco['banco_id']; ?>" 
-                        <?php if ($filtro_banco == $row_banco['banco_id']) echo 'selected'; ?>>
-                        <?php echo $row_banco['nombre']; ?>
+                <//?php while ($row_banco = $result_bancos->fetch_assoc()): ?>
+                    <option value="<//?php echo $row_banco['banco_id']; ?>" 
+                        <//?php if ($filtro_banco == $row_banco['banco_id']) echo 'selected'; ?>>
+                        <//?php echo $row_banco['nombre']; ?>
                     </option>
-                <?php endwhile; ?>
+                <//?php endwhile; ?>
             </select>
 
             <label for="filtro_tarjeta">Filtrar por Tarjeta de Crédito:</label>
             <select name="filtro_tarjeta" class="form-control">
                 <option value="">Todas</option>
-                <?php while ($row_tarjeta = $result_tarjetas->fetch_assoc()): ?>
-                    <option value="<?php echo $row_tarjeta['tarjeta_id']; ?>" 
-                        <?php if ($filtro_tarjeta == $row_tarjeta['tarjeta_id']) echo 'selected'; ?>>
-                        <?php echo $row_tarjeta['nombre']; ?>
+                <//?php while ($row_tarjeta = $result_tarjetas->fetch_assoc()): ?>
+                    <option value="<//?php echo $row_tarjeta['tarjeta_id']; ?>" 
+                        <//?php if ($filtro_tarjeta == $row_tarjeta['tarjeta_id']) echo 'selected'; ?>>
+                        <//?php echo $row_tarjeta['nombre']; ?>
                     </option>
-                <?php endwhile; ?>
+                <//?php endwhile; ?>
             </select>
 
             <label for="filtro_cuotas">Filtrar por Cantidad de Cuotas:</label>
-            <input type="number" name="filtro_cuotas" min="1" value="<?php echo $filtro_cuotas; ?>" class="form-control">
+            <input type="number" name="filtro_cuotas" min="1" value="<//?php echo $filtro_cuotas; ?>" class="form-control">
 
             <label for="filtro_mes">Filtrar por Mes:</label>
             <select name="filtro_mes" class="form-control">
                 <option value="">Todos</option>
-                <?php for ($i = 1; $i <= 12; $i++): ?>
-                    <option value="<?php echo $i; ?>" <?php if ($filtro_mes == $i) echo 'selected'; ?>>
-                        <?php echo date("F", mktime(0, 0, 0, $i, 10)); // Nombre del mes ?>
+                <//?php for ($i = 1; $i <= 12; $i++): ?>
+                    <option value="<//php echo $i; ?>" <//?php if ($filtro_mes == $i) echo 'selected'; ?>>
+                        <//?php echo date("F", mktime(0, 0, 0, $i, 10)); // Nombre del mes ?>
                     </option>
-                <?php endfor; ?>
+                <//?php endfor; ?>
             </select>
 
             <label for="filtro_anio">Filtrar por Año:</label>
             <select name="filtro_anio" class="form-control">
                 <option value="">Todos</option>
-                <?php 
+                <//?php 
                 $currentYear = date('Y');
                 for ($i = $currentYear; $i >= $currentYear - 10; $i--): ?>
-                    <option value="<?php echo $i; ?>" <?php if ($filtro_anio == $i) echo 'selected'; ?>>
-                        <?php echo $i; ?>
+                    <option value="<//?php echo $i; ?>" <//?php if ($filtro_anio == $i) echo 'selected'; ?>>
+                        <//?php echo $i; ?>
                     </option>
-                <?php endfor; ?>
+                <//?php endfor; ?>
             </select>
 
             <button class="btn btn-secondary btn-sm" type="submit">Aplicar Filtros</button>
-        </form>
+        </form-->
 
         <!-- Tabla de gastos -->
         <table class="table" border="1">

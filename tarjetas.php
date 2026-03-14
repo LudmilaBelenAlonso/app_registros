@@ -35,20 +35,39 @@ if (isset($_GET['eliminar'])) {
     }
 }*/
 
-// Obtener todas las tarjetas de crédito del usuario
-$sql = "SELECT * FROM tarjetas_credito WHERE usuario_id='1'";
-$result = $conn->query($sql);
+function mostrarMensaje($mensaje, $tipo = 'success') {
+    $clase = $tipo === 'success' ? 'success' : 'error';
+    echo "<div class='$clase'>" . htmlspecialchars($mensaje) . "</div>";
+}
+
+function obtenerTarjetas($conn, $usuario_id) {
+    $stmt = $conn->prepare("SELECT * FROM tarjetas_credito WHERE usuario_id = ?");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $tarjetas = [];
+    while ($row = $result->fetch_assoc()) {
+        $tarjetas[] = $row;
+    }
+    $stmt->close();
+    return $tarjetas;
+}
+
+$usuario_id = 1; // Reemplazar por $_SESSION['user_id'] en producción
+$tarjetas = obtenerTarjetas($conn, $usuario_id);
 ?>
 
 <section class="container">
     <h2>Tarjetas de Crédito</h2>
 
-    <!-- Formulario para agregar tarjeta de crédito >
+    <!-- Formulario para agregar tarjeta de crédito -->
+    <!--
     <form method="post" action="tarjetas.php">
         <input type="text" name="nombre" placeholder="Nombre de la tarjeta" required>
         <input type="number" step="0.01" name="limite" placeholder="Límite de crédito" required>
         <button type="submit" name="agregar_tarjeta">Agregar Tarjeta</button>
-    </form-->
+    </form>
+    -->
 
     <table class="table" border="1">
         <tr>
@@ -56,15 +75,15 @@ $result = $conn->query($sql);
             <th>Límite</th>
             <!--th>Acciones</th-->
         </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
+        <?php foreach ($tarjetas as $row): ?>
             <tr>
                 <td><?php echo $row['nombre']; ?></td>
                 <td><?php echo $row['limite']; ?></td>
                 <!--td>
-                    <a href="tarjetas.php?eliminar=<--?php echo $row['id']; ?>">Eliminar</a>
+                    <a href="tarjetas.php?eliminar=<?php echo $row['id']; ?>">Eliminar</a>
                 </td-->
             </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </table>
     <a href="index.php">Volver al Inicio</a>
 </section>
