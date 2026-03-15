@@ -42,16 +42,16 @@ $archivo_seccion = $seccion . '.php';
             </nav>
         </div>
     </header>
-    <main id="main-content">
-        <h2>Economia hogareña</h2>
+    <main id="main-content" class="container-fluid pt-4 pb-5 text-left">
+        <h2 class="mb-4">Economía Hogareña</h2>
         <?php
             // Incluir el archivo de la sección seleccionada
             include $archivo_seccion;
         ?>
     </main>
-    <footer id="main-footer" class="bg-dark text-white py-3">
+    <footer id="main-footer" class="bg-dark text-white py-3 mt-auto">
         <div class="container text-center">
-            <p>© 2024 Aplicación de Economía Hogareña</p>
+            <p class="mb-0">© 2024 Aplicación de Economía Hogareña</p>
         </div>
     </footer>
 </body>

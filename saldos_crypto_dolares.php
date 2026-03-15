@@ -17,33 +17,39 @@ if (!$result_saldos) {
     die("Error en la consulta de saldos: " . mysqli_error($conn));
 }
 ?>
-<section class="container">
-    <h3>Saldos Crypto/Dólares</h3>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Banco</th>
-                <th>Moneda</th>
-                <th>Saldo Actual</th>
-                <th>Fecha Registro</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($result_saldos && mysqli_num_rows($result_saldos) > 0): ?>
-                <?php while ($row = mysqli_fetch_assoc($result_saldos)): ?>
-                    <tr>
-                        <td><?php echo $row['banco']; ?></td>
-                        <td><?php echo $row['moneda']; ?></td>
-                        <td><?php echo number_format($row['saldo'], 7); ?></td>
-                        <td><?php echo $row['fecha_registro']; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
+<section class="container mt-4 mb-5">
+    <h3 class="mb-4">Saldos Crypto/Dólares</h3>
+    
+    <div class="table-responsive shadow">
+        <table class="table table-striped table-hover table-dark text-center mb-0">
+            <thead class="thead-dark">
                 <tr>
-                    <td colspan="4">No se encontraron saldos actuales.</td>
+                    <th>Banco/Billetera</th>
+                    <th>Moneda</th>
+                    <th>Saldo Actual</th>
+                    <th>Fecha Registro</th>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-    <a href="index.php">Volver al Inicio</a>
+            </thead>
+            <tbody>
+                <?php if ($result_saldos && mysqli_num_rows($result_saldos) > 0): ?>
+                    <?php while ($row = mysqli_fetch_assoc($result_saldos)): ?>
+                        <tr>
+                            <td><?php echo $row['banco']; ?></td>
+                            <td><?php echo $row['moneda']; ?></td>
+                            <td><?php echo number_format($row['saldo'], 7); ?></td>
+                            <td><?php echo $row['fecha_registro']; ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4">No se encontraron saldos actuales.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-3">
+        <a href="index.php" class="text-info">Volver al Inicio</a>
+    </div>
 </section>

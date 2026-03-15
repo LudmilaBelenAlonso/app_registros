@@ -62,35 +62,55 @@ $sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND debito='1' OR banco
 $result_bancos = $conn->query($sql_bancos);
 ?>
 
-<section class="container">
-    <h3>Agregar Ingresos</h3>
+<section class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card bg-dark text-white shadow">
+                <div class="card-header border-bottom border-secondary">
+                    <h3 class="mb-0">Agregar Ingresos</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="index.php?s=agregar_ingresos">
+                        <div class="form-group">
+                            <label for="categoria_id">Categoría:</label>
+                            <select name="categoria_id" required class="form-control">
+                                <?php while ($row = $result_categorias->fetch_assoc()): ?>
+                                    <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
 
-    <!-- Formulario para agregar un nuevo ingreso -->
-    <form method="POST" action="index.php?s=agregar_ingresos">
-        <label for="categoria_id">Categoría:</label>
-        <select name="categoria_id" required class="form-control">
-            <?php while ($row = $result_categorias->fetch_assoc()): ?>
-                <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
-            <?php endwhile; ?>
-        </select>
+                        <div class="form-group">
+                            <label for="monto">Monto:</label>
+                            <input type="number" step="0.01" name="monto" placeholder="Monto" required class="form-control">
+                        </div>
 
-        <label for="monto">Monto:</label>
-        <input type="number" step="0.01" name="monto" placeholder="Monto" required class="form-control">
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" name="fecha" required class="form-control">
+                        </div>
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" name="fecha" required class="form-control">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea name="descripcion" placeholder="Descripción" class="form-control"></textarea>
+                        </div>
 
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" placeholder="Descripción" class="form-control"></textarea>
+                        <div class="form-group">
+                            <label for="banco_id">Banco:</label>
+                            <select name="banco_id" required class="form-control">
+                                <?php while ($row = $result_bancos->fetch_assoc()): ?>
+                                    <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
 
-        <label for="banco_id">Banco:</label>
-        <select name="banco_id" required class="form-control">
-            <?php while ($row = $result_bancos->fetch_assoc()): ?>
-                <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
-            <?php endwhile; ?>
-        </select>
-
-        <button class="btn btn-secondary btn-sm" type="submit">Registrar Ingreso</button>
-    </form>
-    <a href="index.php">Volver al Inicio</a>
+                        <button class="btn btn-secondary btn-block mt-4" type="submit">Registrar Ingreso</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="index.php" class="text-info">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>

@@ -58,40 +58,64 @@ $bancos = obtenerBancos($conn, $usuario_id);
 $monedas = obtenerMonedas($conn);
 
 ?>
-<section class="container">
-    <h3>Agregar Ingresos Crypto/Dólares</h3>
-    <form method="post" action="agregar_ingresos_cd.php">
-        <label for="categoria_id">Categoría:</label>
-        <select name="categoria_id" required class="form-control">
-            <?php foreach ($categorias as $row): ?>
-                <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
-            <?php endforeach; ?>
-        </select>
-        
-        <label for="monto">Monto:</label>
-        <input type="number" name="monto" step="0.01" required class="form-control">
+<section class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card bg-dark text-white shadow">
+                <div class="card-header border-bottom border-secondary">
+                    <h3 class="mb-0">Agregar Ingreso Crypto/USD</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="agregar_ingresos_cd.php">
+                        <div class="form-group">
+                            <label for="categoria_id">Categoría:</label>
+                            <select name="categoria_id" required class="form-control">
+                                <?php foreach ($categorias as $row): ?>
+                                    <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="monto">Monto:</label>
+                            <input type="number" name="monto" step="0.01" required class="form-control">
+                        </div>
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" name="fecha" required class="form-control">
-        
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" class="form-control"></textarea>
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" name="fecha" required class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea name="descripcion" class="form-control"></textarea>
+                        </div>
 
-        <label for="banco_id">Banco:</label>
-        <select name="banco_id" class="form-control">
-            <?php foreach ($bancos as $row): ?>
-                <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
-            <?php endforeach; ?>
-        </select>
+                        <div class="form-group">
+                            <label for="banco_id">Banco/Billetera:</label>
+                            <select name="banco_id" class="form-control">
+                                <?php foreach ($bancos as $row): ?>
+                                    <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-        <label for="moneda_id">Moneda:</label>
-        <select name="moneda_id" class="form-control">
-            <?php foreach ($monedas as $row): ?>
-                <option value="<?php echo $row['moneda_id']; ?>"><?php echo $row['descripcion']; ?></option>
-            <?php endforeach; ?>
-        </select>
+                        <div class="form-group">
+                            <label for="moneda_id">Moneda:</label>
+                            <select name="moneda_id" class="form-control">
+                                <?php foreach ($monedas as $row): ?>
+                                    <option value="<?php echo $row['moneda_id']; ?>"><?php echo $row['descripcion']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-        <button class="btn btn-secondary btn-sm" type="submit">Registrar Ingreso</button>
-    </form>
-    <a href="index.php">Volver al Inicio</a>
+                        <button class="btn btn-secondary btn-block mt-4" type="submit">Registrar Ingreso</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="index.php" class="text-info">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>

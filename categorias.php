@@ -40,25 +40,30 @@ $sql = "SELECT * FROM categorias WHERE usuario_id='1'";
 $result = $conn->query($sql);
 ?>
 
-<section class="container">
-    <h3>Categorías</h3>
-        <table class="table" border="1">
-            <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <!--th>Acciones</th-->
-            </tr>
-            <?php while ($row = $result->fetch_assoc()): ?>
+<section class="container mt-4 mb-5">
+    <h3 class="mb-4">Categorías</h3>
+    
+    <div class="table-responsive shadow">
+        <table class="table table-striped table-hover table-dark text-center mb-0">
+            <thead class="thead-dark">
                 <tr>
-                    <td><?php echo $row['nombre']; ?></td>
-                    <td><?php echo $row['tipo']; ?></td>
-                    <!--td>
-                        <a href="tarjetas.php?eliminar=<--?php echo $row['id']; ?>">Eliminar</a>
-                    </td-->
+                    <th>Nombre</th>
+                    <th>Tipo</th>
                 </tr>
-            <?php endwhile; ?>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['nombre']; ?></td>
+                        <td><?php echo $row['tipo']; ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
         </table>
+    </div>
 
-    <a href="index.php">Volver al Inicio</a>
+    <div class="mt-3">
+        <a href="index.php" class="text-info">Volver al Inicio</a>
+    </div>
 </section>
 

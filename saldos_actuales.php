@@ -23,33 +23,37 @@ if (!$result_saldos) {
 
 ?>
 
-<section class="container">
-    <h3>Saldos Actualizados</h3>
+<section class="container mt-4 mb-5">
+    <h3 class="mb-4">Saldos Actualizados</h3>
     
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Banco</th>
-                <th>Saldo Actual</th>
-                <th>Fecha Registro</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($result_saldos && mysqli_num_rows($result_saldos) > 0): ?>
-                <?php while ($row = mysqli_fetch_assoc($result_saldos)): ?>
-                    <tr>
-                        <td><?php echo $row['banco']; ?></td>
-                        <td><?php echo number_format($row['saldo'], 2); ?></td>
-                        <td><?php echo $row['fecha_registro']; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
+    <div class="table-responsive shadow">
+        <table class="table table-striped table-hover table-dark text-center mb-0">
+            <thead class="thead-dark">
                 <tr>
-                    <td colspan="2">No se encontraron saldos actuales.</td>
+                    <th>Banco</th>
+                    <th>Saldo Actual</th>
+                    <th>Fecha Registro</th>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php if ($result_saldos && mysqli_num_rows($result_saldos) > 0): ?>
+                    <?php while ($row = mysqli_fetch_assoc($result_saldos)): ?>
+                        <tr>
+                            <td><?php echo $row['banco']; ?></td>
+                            <td>$ <?php echo number_format($row['saldo'], 2); ?></td>
+                            <td><?php echo $row['fecha_registro']; ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="3">No se encontraron saldos actuales.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
-    <a href="index.php">Volver al Inicio</a>
+    <div class="mt-3">
+        <a href="index.php" class="text-info">Volver al Inicio</a>
+    </div>
 </section>

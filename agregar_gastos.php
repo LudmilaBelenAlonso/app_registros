@@ -100,69 +100,100 @@ $sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id='1'";
 $result_tarjetas = $conn->query($sql_tarjetas);
 ?>
 
-<section class="container">
-    <h3>Agregar Gastos</h3>
+<section class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card bg-dark text-white shadow">
+                <div class="card-header border-bottom border-secondary">
+                    <h3 class="mb-0">Agregar Gastos</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="index.php?s=agregar_gastos">
+                        <div class="form-group">
+                            <label for="categoria_id">Categoría:</label>
+                            <select name="categoria_id" required class="form-control">
+                                <?php while ($row = $result_categorias->fetch_assoc()): ?>
+                                    <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
 
-    <form method="post" action="index.php?s=agregar_gastos">
-        <label for="categoria_id">Categoría:</label>
-        <select name="categoria_id" required class="form-control">
-            <?php while ($row = $result_categorias->fetch_assoc()): ?>
-                <option value="<?php echo $row['categoria_id']; ?>"><?php echo $row['nombre']; ?></option>
-            <?php endwhile; ?>
-        </select>
+                        <div class="form-group">
+                            <label for="monto">Monto:</label>
+                            <input type="number" name="monto" step="0.01" required class="form-control">
+                        </div>
 
-        <label for="monto">Monto:</label>
-        <input type="number" name="monto" step="0.01" required class="form-control">
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" name="fecha" required class="form-control">
+                        </div>
 
-        <label for="fecha">Fecha:</label>
-        <input type="date" name="fecha" required class="form-control">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea name="descripcion" placeholder="Descripción" class="form-control"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tipo_pago">Tipo de Pago:</label>
+                            <select name="tipo_pago" id="tipo_pago" required onchange="toggleBancoTarjeta()" class="form-control">
+                                <option value="debito">Débito</option>
+                                <option value="credito">Crédito</option>
+                            </select>
+                        </div>
 
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" placeholder="Descripción" class="form-control"></textarea>
-        
-        <label for="tipo_pago">Tipo de Pago:</label>
-        <select name="tipo_pago" id="tipo_pago" required onchange="toggleBancoTarjeta()" class="form-control">
-            <option value="debito">Débito</option>
-            <option value="credito">Crédito</option>
-        </select>
+                        <div id="banco_debito" class="form-group" style="display:block;">
+                            <label for="banco_id_debito">Banco (Débito):</label>
+                            <select name="banco_id_debito" class="form-control">
+                                <?php while ($row = $result_bancos->fetch_assoc()): ?>
+                                    <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
 
-        <div id="banco_debito" style="display:block;">
-            <label for="banco_id_debito">Banco (Débito):</label>
-            <select name="banco_id_debito" class="form-control">
-                <?php while ($row = $result_bancos->fetch_assoc()): ?>
-                    <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
-                <?php endwhile; ?>
-            </select>
+                        <div id="banco_credito" style="display:none;">
+                            <div class="form-group">
+                                <label for="banco_id_credito">Banco (Crédito):</label>
+                                <select name="banco_id_credito" class="form-control">
+                                    <?php while ($row = $result_tarjetas_bancos->fetch_assoc()): ?>
+                                        <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tarjeta_id">Tarjeta de Crédito:</label>
+                                <select name="tarjeta_id" class="form-control">
+                                    <?php while ($row = $result_tarjetas->fetch_assoc()): ?>
+                                        <option value="<?php echo $row['tarjeta_id']; ?>"><?php echo $row['nombre']; ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cuotas">Cantidad de Cuotas:</label>
+                                <input type="number" name="cuotas" min="1" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cuota_actual">Cuota Actual:</label>
+                                <input type="number" name="cuota_actual" min="1" class="form-control">
+                            </div>
+                        
+                            <div class="form-group">
+                                <label for="fecha_cierre">Fecha de Cierre (Crédito):</label>
+                                <input type="date" name="fecha_cierre" class="form-control">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-secondary btn-block mt-4" type="submit">Registrar Gasto</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="index.php" class="text-info">Volver al Inicio</a>
+                </div>
+            </div>
         </div>
-
-        <div id="banco_credito" style="display:none;">
-            <label for="banco_id_credito">Banco (Crédito):</label>
-            <select name="banco_id_credito" class="form-control">
-                <?php while ($row = $result_tarjetas_bancos->fetch_assoc()): ?>
-                    <option value="<?php echo $row['banco_id']; ?>"><?php echo $row['nombre']; ?></option>
-                <?php endwhile; ?>
-            </select>
-
-            <label for="tarjeta_id">Tarjeta de Crédito:</label>
-            <select name="tarjeta_id" class="form-control">
-                <?php while ($row = $result_tarjetas->fetch_assoc()): ?>
-                    <option value="<?php echo $row['tarjeta_id']; ?>"><?php echo $row['nombre']; ?></option>
-                <?php endwhile; ?>
-            </select>
-
-            <label for="cuotas">Cantidad de Cuotas:</label>
-            <input type="number" name="cuotas" min="1" class="form-control">
-
-            <label for="cuota_actual">Cuota Actual:</label>
-            <input type="number" name="cuota_actual" min="1" class="form-control">
-        
-            <label for="fecha_cierre">Fecha de Cierre (Crédito):</label>
-            <input type="date" name="fecha_cierre" class="form-control">
-        </div>
-
-        <button class="btn btn-secondary btn-sm" type="submit">Registrar Gasto</button>
-    </form>
-    <a href="index.php">Volver al Inicio</a>
+    </div>
 </section>
 
 <script>
