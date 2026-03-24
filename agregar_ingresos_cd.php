@@ -6,15 +6,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $monto = floatval($_POST['monto']);
     $fecha = $_POST['fecha'];
     $descripcion = $_POST['descripcion'];
+    $banco_id = isset($_POST['banco_id']) ? intval($_POST['banco_id']) : null;
     $moneda_id = isset($_POST['moneda_id']) ? intval($_POST['moneda_id']) : null;
 
     $stmt = $conn->prepare("INSERT INTO ingresos_crypto_dolares (usuario_id, categoria_id, banco_id, moneda_id, monto, fecha, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $usuario_id = 1; // Reemplazar por $_SESSION['user_id'] en producción
     $stmt->bind_param("iiiidss", $usuario_id, $categoria_id, $banco_id, $moneda_id, $monto, $fecha, $descripcion);
     if (!$stmt->execute()) {
-        echo "Error al registrar ingreso: " . $stmt->error;
+        $mensaje = "<div class='alert alert-danger mt-3 text-center'>Error al registrar ingreso: " . $stmt->error . "</div>";
     } else {
-        echo "Ingreso registrado correctamente.";
+        // Actualizar o crear saldo en la base de datos
+        if ($banco_id !== null && $moneda_id !== null) {
+            $sql_ver_saldo = "SELECT saldo_cd FROM saldos_crypto_dolares WHERE banco_id = $banco_id AND moneda_id = $moneda_id AND usuario_id = $usuario_id";
+            $resultado_saldo = mysqli_query($conn, $sql_ver_saldo);
+
+            if ($resultado_saldo && mysqli_num_rows($resultado_saldo) > 0) {
+                $fila_saldo = mysqli_fetch_assoc($resultado_saldo);
+                $saldo_anterior = floatval($fila_saldo['saldo_cd']);
+                $nuevo_saldo = $saldo_anterior + $monto;
+
+                $sql_actualizar_saldo = "UPDATE saldos_crypto_dolares 
+                                         SET saldo_cd = $nuevo_saldo 
+                                         WHERE banco_id = $banco_id AND moneda_id = $moneda_id AND usuario_id = $usuario_id";
+                mysqli_query($conn, $sql_actualizar_saldo);
+            } else {
+                // Crear el registro de saldo si no existe previamente
+                $sql_insertar_saldo = "INSERT INTO saldos_crypto_dolares (usuario_id, banco_id, moneda_id, saldo_cd, fecha_registro) 
+                                       VALUES ($usuario_id, $banco_id, $moneda_id, $monto, NOW())";
+                mysqli_query($conn, $sql_insertar_saldo);
+            }
+        }
+        $mensaje = "<div class='alert alert-success mt-3 text-center'>Ingreso registrado y saldo actualizado correctamente.</div>";
     }
     $stmt->close();
 }
@@ -66,7 +88,8 @@ $monedas = obtenerMonedas($conn);
                     <h3 class="mb-0">Agregar Ingreso Crypto/USD</h3>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="agregar_ingresos_cd.php">
+                    <?php if (isset($mensaje)) echo $mensaje; ?>
+                    <form method="post" action="index.php?s=agregar_ingresos_cd">
                         <div class="form-group">
                             <label for="categoria_id">Categoría:</label>
                             <select name="categoria_id" required class="form-control">
