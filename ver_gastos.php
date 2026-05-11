@@ -20,13 +20,26 @@ $sql_gastos = "SELECT transaccion_id, t.monto, t.fecha, t.descripcion, c.nombre 
                LEFT JOIN tarjetas_credito tc ON t.tarjeta_id = tc.tarjeta_id
                WHERE t.usuario_id = '1'";
 
-// Si no se proporcionó un filtro de año explícito en el formulario, filtramos por el año actual
+// Si no se proporcionó un filtro de año explícito en el formulario, filtramos por el año actual o gastos a crédito con cuotas pendientes
 if (empty($filtro_anio)) {
     $current_year = date('Y');
-    $sql_gastos .= " AND YEAR(t.fecha) = '$current_year' ";
+    $sql_gastos .= " AND (
+        YEAR(t.fecha) = '$current_year' OR 
+        (t.tipo_pago = 'credito' AND NOT EXISTS (
+            SELECT 1 FROM transacciones t2 
+            WHERE t2.tipo_pago = 'credito' 
+              AND t2.descripcion = t.descripcion 
+              AND t2.monto = t.monto 
+              AND t2.tarjeta_id = t.tarjeta_id 
+              AND CAST(t2.cuota_actual AS UNSIGNED) >= CAST(t2.cuotas AS UNSIGNED)
+        ))
+    ) ";
 }
 
-$sql_gastos .= " ORDER BY t.fecha DESC, t.descripcion DESC, t.cuota_actual DESC";
+$sql_gastos .= " ORDER BY 
+    t.fecha DESC, 
+    CASE WHEN t.tipo_pago = 'credito' AND t.cuotas > 0 THEN t.descripcion ELSE '' END ASC,
+    t.cuota_actual DESC";
 
 // Aplicar filtros si están seleccionados
 if (!empty($filtro_tipo_pago)) {

@@ -56,7 +56,7 @@ if (isset($_POST['transaccion_id'])) {
 
         // Insertar el nuevo registro duplicado
         $sql_insert = "INSERT INTO transacciones (usuario_id, categoria_id, banco_id, monto, fecha, descripcion, tipo_pago, tarjeta_id, cuota_actual, cuotas, fecha_cierre)
-                       VALUES ('$usuario_id', '$categoria_id', '$banco_id', '$monto', NOW(), '$descripcion', '$tipo_pago', '$tarjeta_id','$cuota_actual', '$cuotas', '$fecha_cierre')";
+                       VALUES ('$usuario_id', '$categoria_id', '$banco_id', '$monto', '$fecha', '$descripcion', '$tipo_pago', '$tarjeta_id','$cuota_actual', '$cuotas', '$fecha_cierre')";
 
         if (mysqli_query($conn, $sql_insert)) {
             echo "Transacción duplicada correctamente.";
