@@ -12,7 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha = $_POST['fecha'];
     $descripcion = $_POST['descripcion'];
     $tipo_pago = $_POST['tipo_pago'];
-    $banco_id = isset($_POST['banco_id']) ? intval($_POST['banco_id']) : null;
+    if ($tipo_pago === 'debito') {
+        $banco_id = isset($_POST['banco_id_debito']) ? intval($_POST['banco_id_debito']) : null;
+    } else {
+        $banco_id = isset($_POST['banco_id_credito']) ? intval($_POST['banco_id_credito']) : null;
+    }
     $tarjeta_id = isset($_POST['tarjeta_id']) ? intval($_POST['tarjeta_id']) : null;
     $cuotas = isset($_POST['cuotas']) ? intval($_POST['cuotas']) : null;
     $cuota_actual = isset($_POST['cuota_actual']) ? intval($_POST['cuota_actual']) : null;
