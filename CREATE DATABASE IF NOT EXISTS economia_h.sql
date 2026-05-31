@@ -29,13 +29,16 @@ CREATE TABLE ingresos (
     ingreso_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     categoria_id INT NOT NULL,
-    banco_id INT NOT NULL,
+    banco_id INT DEFAULT NULL,
+    tipo_pago ENUM('debito', 'credito') NOT NULL DEFAULT 'debito',
+    tarjeta_id INT DEFAULT NULL,
     monto DECIMAL(10,2) NOT NULL,
     fecha DATE NOT NULL,
     descripcion TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ON DELETE CASCADE,
-    FOREIGN KEY (banco_id) REFERENCES bancos(banco_id) ON DELETE CASCADE
+    FOREIGN KEY (banco_id) REFERENCES bancos(banco_id) ON DELETE CASCADE,
+    FOREIGN KEY (tarjeta_id) REFERENCES tarjetas_credito(tarjeta_id) ON DELETE SET NULL
 );
 
 CREATE TABLE saldos_actuales (
