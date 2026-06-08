@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   app_economia:
     image: mrxder/docker-apache-php7.2-mysql-phpmyadmin
     container_name: app_registros
     restart: always
     ports:
-      - "8088:80"
+      - "8080:80"
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -14,15 +12,6 @@ services:
       - MYSQL_USER=devroot
       - MYSQL_PASSWORD=123
     volumes:
-      # Tus archivos PHP siguen en tu carpeta de siempre
+      # Archivos PHP
       - "/mnt/360C17970C17516B/git/app_registros:/var/www/html"
-      
-      # La base de datos ahora usa un volumen interno para evitar errores de permisos
-      - "/mnt/360C17970C17516B/git/app_registros/app_data:/var/lib/mysql"
-      
-      # Cargamos el script SQL de creación (entre comillas por los espacios)
-      - "/mnt/360C17970C17516B/git/app_registros/CREATE DATABASE IF NOT EXISTS economia_h.sql:/docker-entrypoint-initdb.d/init.sql"
-
-volumes:
-  # Definimos el volumen interno acá
-  mysql_data_economia:
+      # MySQL usa almacenamiento interno del contenedor (sin volumen NTFS)

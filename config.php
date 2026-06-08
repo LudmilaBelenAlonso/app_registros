@@ -13,4 +13,11 @@ $conn = new mysqli($servername, $username, $password, $database, $puerto);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+
+// Función para verificar si el usuario logueado es Administrador (usuario_id = 1)
+if (!function_exists('es_admin')) {
+    function es_admin() {
+        return isset($_SESSION['user_id']) && $_SESSION['user_id'] == 1;
+    }
+}
 ?>

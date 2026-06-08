@@ -12,6 +12,8 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+$user_id = $_SESSION['user_id'];
+
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria_id = $_POST['categoria_id'];
@@ -59,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Inserción de gasto en la tabla transacciones
     $sql = "INSERT INTO transacciones (usuario_id, categoria_id, banco_id, tarjeta_id, monto, fecha, descripcion, tipo_pago, cuotas, cuota_actual, fecha_cierre, timestamp)
             VALUES (
-                1, 
+                '$user_id', 
                 '$categoria_id', 
                 " . ($banco_id !== null ? "'$banco_id'" : "NULL") . ",
                 " . ($tarjeta_id !== null ? "'$tarjeta_id'" : "NULL") . ",
@@ -81,22 +83,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Consulta para obtener todas las categorías del usuario
-$sql_categorias = "SELECT * FROM categorias WHERE usuario_id='1' AND tipo='gasto'";
+$sql_categorias = "SELECT * FROM categorias WHERE usuario_id='$user_id' AND tipo='gasto'";
 $result_categorias = $conn->query($sql_categorias);
 if (!$result_categorias) {
     die("Error en la consulta de categorías: " . $conn->error);
 }
 
 // Consulta para obtener todos los bancos (débito)
-$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND debito = 1";
+$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='$user_id' AND debito = 1";
 $result_bancos = $conn->query($sql_bancos);
 
 // Consulta para obtener todos los bancos (crédito)
-$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND credito = 1";
+$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='$user_id' AND credito = 1";
 $result_tarjetas_bancos = $conn->query($sql_tarjetas_bancos);
 
 // Consulta para obtener todas las tarjetas de crédito
-$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id='1'";
+$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id='$user_id'";
 $result_tarjetas = $conn->query($sql_tarjetas);
 ?>
 

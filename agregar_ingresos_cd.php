@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $moneda_id = isset($_POST['moneda_id']) ? intval($_POST['moneda_id']) : null;
 
     $stmt = $conn->prepare("INSERT INTO ingresos_crypto_dolares (usuario_id, categoria_id, banco_id, moneda_id, monto, fecha, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $usuario_id = 1; // Reemplazar por $_SESSION['user_id'] en producción
+    $usuario_id = $_SESSION['user_id'];
     $stmt->bind_param("iiiidss", $usuario_id, $categoria_id, $banco_id, $moneda_id, $monto, $fecha, $descripcion);
     if (!$stmt->execute()) {
         $mensaje = "<div class='alert alert-danger mt-3 text-center'>Error al registrar ingreso: " . $stmt->error . "</div>";
@@ -74,7 +74,7 @@ function obtenerMonedas($conn) {
     return $monedas;
 }
 
-$usuario_id = 1;
+$usuario_id = $_SESSION['user_id'];
 $categorias = obtenerCategorias($conn, $usuario_id);
 $bancos = obtenerBancos($conn, $usuario_id);
 $monedas = obtenerMonedas($conn);

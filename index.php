@@ -1,5 +1,10 @@
 <?php
-//session_start();
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 // Obtener la sección desde el parámetro GET, con un valor predeterminado
 $seccion = isset($_GET['s']) ? $_GET['s'] : 'home';
@@ -38,6 +43,8 @@ $archivo_seccion = $seccion . '.php';
                     <li class="nav-item"><a class="nav-link" href="index.php?s=ver_gastos">Ver Gastos</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=categorias">Categorías</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?s=tarjetas">Tarjetas de Crédito</a></li>
+                    <li class="nav-item ml-md-auto"><a class="nav-link text-info font-weight-bold" href="index.php?s=cambiar_password">Mi Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger font-weight-bold" href="logout.php">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </div>

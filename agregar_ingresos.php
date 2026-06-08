@@ -1,6 +1,8 @@
 <?php
 include 'config.php';
 
+$user_id = $_SESSION['user_id'];
+
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria_id = $_POST['categoria_id'];
@@ -26,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Inserción de ingreso en la tabla ingresos
     $sql_ingreso = "INSERT INTO ingresos (usuario_id, categoria_id, banco_id, tipo_pago, tarjeta_id, monto, fecha, descripcion)
-                    VALUES ('1', '$categoria_id', " . ($banco_id !== null ? "'$banco_id'" : "NULL") . ", '$tipo_pago', " . ($tarjeta_id !== null ? "'$tarjeta_id'" : "NULL") . ", '$monto', '$fecha', '$descripcion')";
+                    VALUES ('$user_id', '$categoria_id', " . ($banco_id !== null ? "'$banco_id'" : "NULL") . ", '$tipo_pago', " . ($tarjeta_id !== null ? "'$tarjeta_id'" : "NULL") . ", '$monto', '$fecha', '$descripcion')";
 
     if (mysqli_query($conn, $sql_ingreso)) {
         echo "Ingreso registrado correctamente.<br>";
@@ -51,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 // Crear una nueva entrada en saldos_actuales si no existe
                 $sql_insert_saldo = "INSERT INTO saldos_actuales (usuario_id, banco_id, saldo, fecha_registro)
-                                     VALUES ('1', '$banco_id', '$monto', NOW())";
+                                     VALUES ('$user_id', '$banco_id', '$monto', NOW())";
 
                 if (mysqli_query($conn, $sql_insert_saldo)) {
                     echo "Saldo inicial registrado correctamente.<br>";
@@ -66,19 +68,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Consulta para obtener todas las categorías del usuario
-$sql_categorias = "SELECT * FROM categorias WHERE usuario_id='1' AND tipo='ingreso'";
+$sql_categorias = "SELECT * FROM categorias WHERE usuario_id='$user_id' AND tipo='ingreso'";
 $result_categorias = $conn->query($sql_categorias);
 
 // Consulta para obtener todos los bancos (débito)
-$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND (debito='1' OR banco_id='8')";
+$sql_bancos = "SELECT * FROM bancos WHERE usuario_id='$user_id' AND (debito='1' OR banco_id='8')";
 $result_bancos = $conn->query($sql_bancos);
 
 // Consulta para obtener todos los bancos (crédito)
-$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='1' AND credito = 1";
+$sql_tarjetas_bancos = "SELECT * FROM bancos WHERE usuario_id='$user_id' AND credito = 1";
 $result_tarjetas_bancos = $conn->query($sql_tarjetas_bancos);
 
 // Consulta para obtener todas las tarjetas de crédito
-$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id='1'";
+$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id='$user_id'";
 $result_tarjetas = $conn->query($sql_tarjetas);
 ?>
 

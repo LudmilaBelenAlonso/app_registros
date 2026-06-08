@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $moneda_id = isset($_POST['moneda_id']) ? intval($_POST['moneda_id']) : null;
 
     $stmt = $conn->prepare("INSERT INTO transacciones_dolares (usuario_id, categoria_id, banco_id, tarjeta_id, moneda_id, monto, fecha, descripcion, tipo_pago, cuotas, cuota_actual, fecha_cierre, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $usuario_id = 1; // Reemplazar por $_SESSION['user_id'] en producción
+    $usuario_id = $_SESSION['user_id'];
     $stmt->bind_param("iiiidsssiiis", $usuario_id, $categoria_id, $banco_id, $tarjeta_id, $moneda_id, $monto, $fecha, $descripcion, $tipo_pago, $cuotas, $cuota_actual, $fecha_cierre);
     if (!$stmt->execute()) {
         mostrarError("Error al registrar gasto: " . $stmt->error);
@@ -79,7 +79,7 @@ function obtenerMonedas($conn) {
     return $monedas;
 }
 
-$usuario_id = 1;
+$usuario_id = $_SESSION['user_id'];
 $categorias = obtenerCategorias($conn, $usuario_id);
 $bancos = obtenerBancos($conn, $usuario_id);
 $tarjetas = obtenerTarjetas($conn, $usuario_id);

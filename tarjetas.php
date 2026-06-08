@@ -53,7 +53,7 @@ function obtenerTarjetas($conn, $usuario_id) {
     return $tarjetas;
 }
 
-$usuario_id = 1; // Reemplazar por $_SESSION['user_id'] en producción
+$usuario_id = $_SESSION['user_id'];
 $tarjetas = obtenerTarjetas($conn, $usuario_id);
 ?>
 
@@ -72,7 +72,7 @@ $tarjetas = obtenerTarjetas($conn, $usuario_id);
                 <?php foreach ($tarjetas as $row): ?>
                     <tr>
                         <td><?php echo $row['nombre']; ?></td>
-                        <td><?php echo $row['limite']; ?></td>
+                        <td><?php echo es_admin() ? $row['limite'] : '*'; ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

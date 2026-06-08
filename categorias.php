@@ -35,8 +35,9 @@ if (isset($_GET['eliminar'])) {
     }
 }*/
 
+$user_id = $_SESSION['user_id'];
 // Obtener todas las tarjetas de crédito del usuario
-$sql = "SELECT * FROM categorias WHERE usuario_id='1'";
+$sql = "SELECT * FROM categorias WHERE usuario_id='$user_id'";
 $result = $conn->query($sql);
 ?>
 

@@ -7,11 +7,13 @@ error_reporting(E_ALL);
 $mes = isset($_POST['mes']) ? $_POST['mes'] : date('m');
 $anio = isset($_POST['anio']) ? $_POST['anio'] : date('Y');
 
+$user_id = $_SESSION['user_id'];
+
 $sql_saldos = "SELECT b.nombre AS banco, mcd.descripcion as moneda, saldo_cd AS saldo, fecha_registro
     FROM saldos_crypto_dolares scd
     JOIN bancos b ON scd.banco_id = b.banco_id
     JOIN monedas_crypto_dolares mcd ON scd.moneda_id=mcd.moneda_id
-    WHERE scd.usuario_id = 1";
+    WHERE scd.usuario_id = '$user_id'";
 $result_saldos = mysqli_query($conn, $sql_saldos);
 if (!$result_saldos) {
     die("Error en la consulta de saldos: " . mysqli_error($conn));
@@ -36,7 +38,7 @@ if (!$result_saldos) {
                         <tr>
                             <td><?php echo $row['banco']; ?></td>
                             <td><?php echo $row['moneda']; ?></td>
-                            <td><?php echo number_format($row['saldo'], 7); ?></td>
+                            <td><?php echo es_admin() ? number_format($row['saldo'], 7) : '*'; ?></td>
                             <td><?php echo $row['fecha_registro']; ?></td>
                         </tr>
                     <?php endwhile; ?>

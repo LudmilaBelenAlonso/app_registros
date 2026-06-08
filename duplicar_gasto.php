@@ -21,8 +21,9 @@ if (isset($_POST['duplicar'])) {
 if (isset($_POST['transaccion_id'])) {
     $transaccion_id = mysqli_real_escape_string($conn, $_POST['transaccion_id']);
     
+    $user_id = $_SESSION['user_id'];
     // Obtener la transacción original
-    $sql = "SELECT * FROM transacciones WHERE transaccion_id = '$transaccion_id'";
+    $sql = "SELECT * FROM transacciones WHERE transaccion_id = '$transaccion_id' AND usuario_id = '$user_id'";
     $result = mysqli_query($conn, $sql);
 
     if ($result && mysqli_num_rows($result) > 0) {

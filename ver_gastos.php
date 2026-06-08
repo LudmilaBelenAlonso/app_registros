@@ -10,6 +10,8 @@ $filtro_cuotas = isset($_GET['filtro_cuotas']) ? $_GET['filtro_cuotas'] : '';
 $filtro_mes = isset($_GET['filtro_mes']) ? $_GET['filtro_mes'] : '';
 $filtro_anio = isset($_GET['filtro_anio']) ? $_GET['filtro_anio'] : '';
 
+$user_id = $_SESSION['user_id'];
+
 // Consulta para obtener todas las categorías del usuario limitando al año en curso por defecto
 $sql_gastos = "SELECT transaccion_id, t.monto, t.fecha, t.descripcion, c.nombre AS categoria, 
                       b.nombre AS banco, t.tipo_pago, tc.nombre AS tarjeta, 
@@ -18,7 +20,7 @@ $sql_gastos = "SELECT transaccion_id, t.monto, t.fecha, t.descripcion, c.nombre 
                JOIN categorias c ON t.categoria_id = c.categoria_id
                LEFT JOIN bancos b ON t.banco_id = b.banco_id
                LEFT JOIN tarjetas_credito tc ON t.tarjeta_id = tc.tarjeta_id
-               WHERE t.usuario_id = '1'";
+               WHERE t.usuario_id = '$user_id'";
 
 // Si no se proporcionó un filtro de año explícito en el formulario, filtramos por el año actual o gastos a crédito con cuotas pendientes
 if (empty($filtro_anio)) {
@@ -69,11 +71,11 @@ if (!empty($filtro_anio)) {
 $result_gastos = $conn->query($sql_gastos);
 
 // Consulta para obtener los bancos del usuario
-$sql_bancos = "SELECT * FROM bancos WHERE usuario_id = 1";
+$sql_bancos = "SELECT * FROM bancos WHERE usuario_id = '$user_id'";
 $result_bancos = $conn->query($sql_bancos);
 
 // Consulta para obtener las tarjetas del usuario
-$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id = 1";
+$sql_tarjetas = "SELECT * FROM tarjetas_credito WHERE usuario_id = '$user_id'";
 $result_tarjetas = $conn->query($sql_tarjetas);
 ?>
 
@@ -165,8 +167,8 @@ if ($result_gastos->num_rows > 0):
                     <td>
                         <?php echo $gasto['transaccion_id']; ?>
                     </td>
-                    <td>$
-                        <?php echo number_format($gasto['monto'], 2); ?>
+                    <td>
+                        <?php echo es_admin() ? '$ ' . number_format($gasto['monto'], 2) : '*'; ?>
                     </td>
                     <td>
                         <?php echo $gasto['fecha']; ?>
